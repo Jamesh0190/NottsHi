@@ -5,88 +5,154 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nottingham Private Hire - Premium Private Hire & Venue Booking</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
+            /* Light theme variables */
             --primary: #0a3d62;
             --secondary: #f39c12;
-            --accent: #3498db;
-            --light: #ecf0f1;
+            --accent: #27ae60;
+            --light: #ffffff;
             --dark: #2c3e50;
-            --success: #27ae60;
-            --danger: #e74c3c;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --radius: 8px;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --card-bg: #ffffff;
+            --border-color: #eaeaea;
+            --header-bg: rgba(255, 255, 255, 0.95);
         }
-        
+
+        /* Dark theme variables */
+        [data-theme="dark"] {
+            --primary: #3498db;
+            --secondary: #f39c12;
+            --accent: #2ecc71;
+            --light: #2c3e50;
+            --dark: #ecf0f1;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            --bg-color: #1a1a1a;
+            --text-color: #f5f5f5;
+            --card-bg: #2c2c2c;
+            --border-color: #444444;
+            --header-bg: rgba(26, 26, 26, 0.95);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            background-color: #f8f9fa;
-            color: var(--dark);
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             line-height: 1.6;
+            transition: var(--transition);
+            overflow-x: hidden;
         }
-        
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
         .container {
             width: 90%;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 15px;
         }
-        
+
         /* Header Styles */
         header {
-            background-color: white;
+            background-color: var(--header-bg);
             box-shadow: var(--shadow);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
         }
-        
+
         .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 1rem 0;
+            transition: var(--transition);
         }
-        
+
         .logo {
             display: flex;
             align-items: center;
             font-size: 1.8rem;
             font-weight: 700;
             color: var(--primary);
+            transition: var(--transition);
         }
-        
+
         .logo i {
             color: var(--secondary);
             margin-right: 10px;
+            font-size: 2rem;
+            animation: pulse 2s infinite;
         }
-        
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
         nav ul {
             display: flex;
             list-style: none;
         }
-        
+
         nav ul li {
             margin-left: 1.5rem;
+            position: relative;
         }
-        
+
         nav ul li a {
             text-decoration: none;
-            color: var(--dark);
+            color: var(--text-color);
             font-weight: 500;
-            transition: color 0.3s;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
         }
-        
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary);
+            transition: var(--transition);
+        }
+
         nav ul li a:hover {
-            color: var(--accent);
+            color: var(--secondary);
         }
-        
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
         .cta-button {
             background-color: var(--secondary);
             color: white;
@@ -95,336 +161,531 @@
             border-radius: var(--radius);
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: var(--transition);
+            box-shadow: 0 4px 6px rgba(243, 156, 18, 0.3);
         }
-        
+
         .cta-button:hover {
             background-color: #e67e22;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(243, 156, 18, 0.4);
         }
-        
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            transition: var(--transition);
+            padding: 0.5rem;
+            border-radius: 50%;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--border-color);
+            transform: rotate(180deg);
+        }
+
         /* Mobile Menu Toggle */
         .mobile-menu-toggle {
             display: none;
             font-size: 1.5rem;
             cursor: pointer;
-            color: var(--primary);
+            color: var(--text-color);
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            border-radius: var(--radius);
+            transition: var(--transition);
         }
-        
+
+        .mobile-menu-toggle:hover {
+            background-color: var(--border-color);
+        }
+
         /* Hero Section */
         .hero {
             background: linear-gradient(rgba(10, 61, 98, 0.85), rgba(10, 61, 98, 0.85)), url('https://images.unsplash.com/photo-1554224154-260325b0586e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
             color: white;
-            padding: 5rem 0;
+            padding: 8rem 0;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
-        
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: move 20s linear infinite;
+        }
+
+        @keyframes move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(20px, 20px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
         .hero h1 {
             font-size: 3.5rem;
             margin-bottom: 1rem;
             font-weight: 700;
+            color: white;
+            animation: fadeInUp 1s ease-out;
         }
-        
+
         .hero p {
             font-size: 1.2rem;
             max-width: 700px;
             margin: 0 auto 2rem;
+            animation: fadeInUp 1s ease-out 0.2s;
+            opacity: 0;
+            animation-fill-mode: forwards;
         }
-        
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .hero-buttons {
             display: flex;
             justify-content: center;
             gap: 1rem;
+            animation: fadeInUp 1s ease-out 0.4s;
+            opacity: 0;
+            animation-fill-mode: forwards;
         }
-        
+
         .btn {
             padding: 0.8rem 2rem;
             border-radius: var(--radius);
             font-weight: 600;
             text-decoration: none;
             display: inline-block;
-            transition: all 0.3s;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
         }
-        
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            transform: translateX(0);
+        }
+
         .btn-primary {
             background-color: var(--secondary);
             color: white;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
         }
-        
+
         .btn-primary:hover {
             background-color: #e67e22;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.5);
         }
-        
+
         .btn-outline {
             background-color: transparent;
             color: white;
             border: 2px solid white;
         }
-        
+
         .btn-outline:hover {
             background-color: white;
             color: var(--primary);
+            transform: translateY(-3px);
         }
-        
+
         /* Booking Section */
         .booking-section {
             padding: 4rem 0;
-            background-color: white;
+            background-color: var(--bg-color);
         }
-        
+
         .section-title {
             text-align: center;
             margin-bottom: 3rem;
         }
-        
+
         .section-title h2 {
             font-size: 2.5rem;
-            color: var(--primary);
             margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
         }
-        
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--secondary);
+        }
+
         .section-title p {
-            color: #7f8c8d;
+            color: var(--text-color);
             max-width: 600px;
-            margin: 0 auto;
+            margin: 1.5rem auto 0;
+            opacity: 0.8;
         }
-        
+
         .booking-tabs {
             display: flex;
             justify-content: center;
             margin-bottom: 2rem;
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 0.5rem;
+            box-shadow: var(--shadow);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        
+
         .tab {
             padding: 1rem 2rem;
-            background-color: #f1f2f6;
+            background-color: transparent;
             border: none;
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
+            border-radius: var(--radius);
+            color: var(--text-color);
+            flex: 1;
         }
-        
-        .tab:first-child {
-            border-radius: var(--radius) 0 0 var(--radius);
-        }
-        
-        .tab:last-child {
-            border-radius: 0 var(--radius) var(--radius) 0;
-        }
-        
+
         .tab.active {
-            background-color: var(--primary);
+            background-color: var(--secondary);
             color: white;
+            box-shadow: 0 4px 10px rgba(243, 156, 18, 0.3);
         }
-        
+
         .booking-form {
-            background-color: #f8f9fa;
+            background-color: var(--card-bg);
             padding: 2rem;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             max-width: 800px;
             margin: 0 auto;
+            transition: var(--transition);
         }
-        
+
         .form-group {
             margin-bottom: 1.5rem;
         }
-        
+
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
-            color: var(--dark);
+            color: var(--text-color);
         }
-        
+
         .form-control {
             width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-color);
             border-radius: var(--radius);
             font-size: 1rem;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: var(--transition);
         }
-        
+
+        .form-control:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
+        }
+
         .form-row {
             display: flex;
             gap: 1rem;
         }
-        
+
         .form-row .form-group {
             flex: 1;
         }
-        
+
         /* Features Section */
         .features {
             padding: 4rem 0;
+            background-color: var(--bg-color);
         }
-        
+
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             margin-top: 3rem;
         }
-        
+
         .feature-card {
-            background-color: white;
+            background-color: var(--card-bg);
             padding: 2rem;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             text-align: center;
-            transition: transform 0.3s;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
         }
-        
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .feature-card:hover::before {
+            transform: translateX(0);
+        }
+
         .feature-card:hover {
             transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
-        
+
         .feature-icon {
             font-size: 3rem;
             color: var(--secondary);
             margin-bottom: 1.5rem;
+            transition: var(--transition);
         }
-        
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1);
+        }
+
         .feature-card h3 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
             color: var(--primary);
         }
-        
+
         /* Vehicles & Venues Sections */
         .vehicles, .venues {
             padding: 4rem 0;
-            background-color: white;
+            background-color: var(--bg-color);
         }
-        
+
         .card-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 2rem;
             margin-top: 3rem;
         }
-        
+
         .card {
-            background-color: #f8f9fa;
+            background-color: var(--card-bg);
             border-radius: var(--radius);
             overflow: hidden;
             box-shadow: var(--shadow);
-            transition: transform 0.3s;
+            transition: var(--transition);
+            position: relative;
         }
-        
+
         .card:hover {
             transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
-        
+
+        .card-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: var(--secondary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 1;
+        }
+
         .card-img {
             height: 200px;
             background-size: cover;
             background-position: center;
+            transition: var(--transition);
         }
-        
+
+        .card:hover .card-img {
+            transform: scale(1.05);
+        }
+
         .card-content {
             padding: 1.5rem;
         }
-        
+
         .card-title {
             font-size: 1.3rem;
             margin-bottom: 0.5rem;
             color: var(--primary);
         }
-        
+
         .card-price {
             font-size: 1.2rem;
             color: var(--secondary);
             font-weight: 700;
             margin-bottom: 1rem;
         }
-        
+
         .card-description {
-            color: #7f8c8d;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .card-features {
+            display: flex;
+            gap: 1rem;
             margin-bottom: 1.5rem;
         }
-        
+
+        .card-feature {
+            display: flex;
+            align-items: center;
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        .card-feature i {
+            margin-right: 0.5rem;
+            color: var(--accent);
+        }
+
         /* Testimonials */
         .testimonials {
             padding: 4rem 0;
-            background-color: #f8f9fa;
+            background-color: var(--bg-color);
         }
-        
+
         .testimonial-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             margin-top: 3rem;
         }
-        
+
         .testimonial-card {
-            background-color: white;
+            background-color: var(--card-bg);
             padding: 2rem;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             position: relative;
+            transition: var(--transition);
         }
-        
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+
         .testimonial-card::before {
             content: """;
             position: absolute;
             top: 10px;
             left: 20px;
             font-size: 4rem;
-            color: #f1f2f6;
+            color: var(--secondary);
             font-family: Georgia, serif;
+            opacity: 0.2;
         }
-        
+
         .testimonial-text {
             margin-bottom: 1.5rem;
             font-style: italic;
-            color: #555;
+            color: var(--text-color);
+            opacity: 0.9;
         }
-        
+
         .testimonial-author {
             display: flex;
             align-items: center;
         }
-        
+
         .author-img {
             width: 50px;
             height: 50px;
             border-radius: 50%;
             margin-right: 1rem;
             object-fit: cover;
+            border: 2px solid var(--secondary);
         }
-        
+
         .author-info h4 {
             margin-bottom: 0.2rem;
             color: var(--primary);
         }
-        
+
         .author-info p {
-            color: #7f8c8d;
+            color: var(--text-color);
             font-size: 0.9rem;
+            opacity: 0.7;
         }
-        
+
         /* Footer */
         footer {
             background-color: var(--primary);
             color: white;
             padding: 4rem 0 2rem;
         }
-        
+
         .footer-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
             margin-bottom: 3rem;
         }
-        
+
         .footer-col h3 {
             font-size: 1.3rem;
             margin-bottom: 1.5rem;
             position: relative;
+            color: white;
         }
-        
+
         .footer-col h3::after {
             content: '';
             position: absolute;
@@ -434,31 +695,44 @@
             height: 3px;
             background-color: var(--secondary);
         }
-        
+
+        .footer-col p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1.5rem;
+        }
+
         .footer-col ul {
             list-style: none;
         }
-        
+
         .footer-col ul li {
             margin-bottom: 0.8rem;
         }
-        
+
         .footer-col ul li a {
-            color: #bdc3c7;
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
-            transition: color 0.3s;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
         }
-        
+
+        .footer-col ul li a i {
+            margin-right: 0.5rem;
+            color: var(--secondary);
+        }
+
         .footer-col ul li a:hover {
             color: white;
+            padding-left: 5px;
         }
-        
+
         .social-links {
             display: flex;
             gap: 1rem;
             margin-top: 1rem;
         }
-        
+
         .social-links a {
             display: flex;
             align-items: center;
@@ -468,21 +742,106 @@
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             color: white;
-            transition: background-color 0.3s;
+            transition: var(--transition);
         }
-        
+
         .social-links a:hover {
             background-color: var(--secondary);
+            transform: translateY(-3px);
         }
-        
+
         .copyright {
             text-align: center;
             padding-top: 2rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #bdc3c7;
+            color: rgba(255, 255, 255, 0.7);
             font-size: 0.9rem;
         }
-        
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: modalFadeIn 0.5s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--danger);
+            transform: rotate(90deg);
+        }
+
+        .modal h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .success-message {
+            background-color: var(--accent);
+            color: white;
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .success-message i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .header-container {
@@ -516,10 +875,11 @@
                 text-align: center;
                 width: 100%;
                 display: none;
-                background-color: #f8f9fa;
+                background-color: var(--card-bg);
                 border-radius: var(--radius);
                 padding: 1rem 0;
                 margin-top: 0.5rem;
+                box-shadow: var(--shadow);
             }
             
             nav ul.active {
@@ -530,11 +890,14 @@
                 margin: 0.5rem 0;
             }
             
-            .cta-button {
+            .header-actions {
                 order: 3;
                 position: absolute;
                 right: 15px;
                 top: 15px;
+            }
+            
+            .cta-button {
                 padding: 0.5rem 1rem;
                 font-size: 0.9rem;
             }
@@ -551,78 +914,105 @@
             .form-row {
                 flex-direction: column;
             }
+            
+            .booking-tabs {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .tab {
+                border-radius: var(--radius);
+            }
         }
-        
-        /* Modal */
-        .modal {
-            display: none;
+
+        /* Loading Animation */
+        .loader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
+            background-color: var(--bg-color);
+            display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 3000;
+            transition: opacity 0.5s, visibility 0.5s;
         }
-        
-        .modal-content {
-            background-color: white;
-            padding: 2rem;
-            border-radius: var(--radius);
-            width: 90%;
-            max-width: 500px;
-            position: relative;
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
         }
-        
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #7f8c8d;
+
+        .loader-circle {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--border-color);
+            border-top-color: var(--secondary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
-        
-        .close-modal:hover {
-            color: var(--danger);
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
-        
-        .modal h3 {
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-        
-        .success-message {
-            background-color: #d4edda;
-            color: #155724;
-            padding: 1rem;
-            border-radius: var(--radius);
-            margin-bottom: 1rem;
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--secondary);
+            color: white;
+            border-radius: 50%;
             display: flex;
+            justify-content: center;
             align-items: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 999;
+            box-shadow: var(--shadow);
         }
-        
-        .success-message i {
-            margin-right: 10px;
-            font-size: 1.5rem;
+
+        .scroll-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            background-color: #e67e22;
+            transform: translateY(-5px);
         }
     </style>
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div class="loader" id="loader">
+        <div class="loader-circle"></div>
+    </div>
+
+    <!-- Scroll to top button -->
+    <div class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
     <!-- Header -->
     <header>
         <div class="container header-container">
-            <div class="mobile-menu-toggle">
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
                 <i class="fas fa-bars"></i>
-            </div>
+            </button>
             <div class="logo">
                 <i class="fas fa-gem"></i>
                 <span>Nottingham Private Hire</span>
             </div>
             <nav>
-                <ul>
+                <ul id="navMenu">
                     <li><a href="#home">Home</a></li>
                     <li><a href="#booking">Booking</a></li>
                     <li><a href="#vehicles">Vehicles</a></li>
@@ -630,18 +1020,25 @@
                     <li><a href="#testimonials">Testimonials</a></li>
                 </ul>
             </nav>
-            <button class="cta-button">Sign In</button>
+            <div class="header-actions">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="cta-button">Sign In</button>
+            </div>
         </div>
     </header>
 
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="container">
-            <h1>Premium Private Hire & Venue Booking</h1>
-            <p>Experience seamless luxury with our integrated platform for premium vehicles and exclusive venues across the Nottinghamshire.</p>
-            <div class="hero-buttons">
-                <a href="#booking" class="btn btn-primary">Book Now</a>
-                <a href="#features" class="btn btn-outline">Learn More</a>
+            <div class="hero-content">
+                <h1>Premium Private Hire & Venue Booking</h1>
+                <p>Experience seamless luxury with our integrated platform for premium vehicles and exclusive venues across the UK.</p>
+                <div class="hero-buttons">
+                    <a href="#booking" class="btn btn-primary">Book Now</a>
+                    <a href="#features" class="btn btn-outline">Learn More</a>
+                </div>
             </div>
         </div>
     </section>
@@ -834,10 +1231,15 @@
             
             <div class="card-grid">
                 <div class="card">
+                    <div class="card-badge">Popular</div>
                     <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
                     <div class="card-content">
                         <h3 class="card-title">Mercedes S-Class</h3>
                         <p class="card-price">From £95/hour</p>
+                        <div class="card-features">
+                            <div class="card-feature"><i class="fas fa-user"></i> 4 Passengers</div>
+                            <div class="card-feature"><i class="fas fa-suitcase"></i> 3 Luggage</div>
+                        </div>
                         <p class="card-description">Ultimate luxury sedan with premium amenities and professional chauffeur service.</p>
                         <button class="btn btn-primary" onclick="showBookingModal('vehicle')">Book Now</button>
                     </div>
@@ -848,16 +1250,25 @@
                     <div class="card-content">
                         <h3 class="card-title">BMW 7 Series</h3>
                         <p class="card-price">From £85/hour</p>
+                        <div class="card-features">
+                            <div class="card-feature"><i class="fas fa-user"></i> 4 Passengers</div>
+                            <div class="card-feature"><i class="fas fa-suitcase"></i> 3 Luggage</div>
+                        </div>
                         <p class="card-description">Sophisticated executive sedan combining performance with exceptional comfort.</p>
                         <button class="btn btn-primary" onclick="showBookingModal('vehicle')">Book Now</button>
                     </div>
                 </div>
                 
                 <div class="card">
+                    <div class="card-badge">Spacious</div>
                     <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
                     <div class="card-content">
                         <h3 class="card-title">Range Rover</h3>
                         <p class="card-price">From £110/hour</p>
+                        <div class="card-features">
+                            <div class="card-feature"><i class="fas fa-user"></i> 6 Passengers</div>
+                            <div class="card-feature"><i class="fas fa-suitcase"></i> 4 Luggage</div>
+                        </div>
                         <p class="card-description">Luxury SUV perfect for group travel with ample space and premium features.</p>
                         <button class="btn btn-primary" onclick="showBookingModal('vehicle')">Book Now</button>
                     </div>
@@ -868,6 +1279,10 @@
                     <div class="card-content">
                         <h3 class="card-title">Mercedes V-Class</h3>
                         <p class="card-price">From £120/hour</p>
+                        <div class="card-features">
+                            <div class="card-feature"><i class="fas fa-user"></i> 8 Passengers</div>
+                            <div class="card-feature"><i class="fas fa-suitcase"></i> 6 Luggage</div>
+                        </div>
                         <p class="card-description">Spacious luxury van accommodating up to 7 passengers with premium comfort.</p>
                         <button class="btn btn-primary" onclick="showBookingModal('vehicle')">Book Now</button>
                     </div>
@@ -886,40 +1301,60 @@
             
             <div class="card-grid">
                 <div class="card">
+                    <div class="card-badge">Historic</div>
                     <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1519161083270-119dd6d0bcbc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
                     <div class="card-content">
                         <h3 class="card-title">The HAC</h3>
                         <p class="card-price">From £3,500/day</p>
+                        <div class="card-features">
+                            <div class="card-feature"><i class="fas fa-users"></i> 200 Guests</div>
+                            <div class="card-feature"><i class="fas fa-map-marker-alt"></i> City Centre</div>
+                        </div>
                         <p class="card-description">Historic London venue with stunning architecture and modern facilities for corporate events.</p>
                         <button class="btn btn-primary" onclick="showBookingModal('venue')">Book Now</button>
                     </div>
                 </div>
                 
                 <div class="card">
+                    <div class="card-badge">Elegant</div>
                     <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1469371670807-013ccf25f16a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
                     <div class="card-content">
                         <h3 class="card-title">One Marylebone</h3>
                         <p class="card-price">From £4,200/day</p>
+                        <div class="card-features">
+                            <div class="card-feature"><i class="fas fa-users"></i> 150 Guests</div>
+                            <div class="card-feature"><i class="fas fa-map-marker-alt"></i> Central London</div>
+                        </div>
                         <p class="card-description">Elegant central London venue with breathtaking spaces for weddings and events.</p>
                         <button class="btn btn-primary" onclick="showBookingModal('venue')">Book Now</button>
                     </div>
                 </div>
                 
                 <div class="card">
+                    <div class="card-badge">Iconic</div>
                     <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1519161083270-119dd6d0bcbc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
                     <div class="card-content">
                         <h3 class="card-title">The Gherkin</h3>
                         <p class="card-price">From £5,800/day</p>
+                        <div class="card-features">
+                            <div class="card-feature"><i class="fas fa-users"></i> 180 Guests</div>
+                            <div class="card-feature"><i class="fas fa-map-marker-alt"></i> Financial District</div>
+                        </div>
                         <p class="card-description">Iconic London skyscraper offering spectacular views and unique event spaces.</p>
                         <button class="btn btn-primary" onclick="showBookingModal('venue')">Book Now</button>
                     </div>
                 </div>
                 
                 <div class="card">
+                    <div class="card-badge">Regal</div>
                     <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
                     <div class="card-content">
                         <h3 class="card-title">Hampton Court Palace</h3>
                         <p class="card-price">From £8,500/day</p>
+                        <div class="card-features">
+                            <div class="card-feature"><i class="fas fa-users"></i> 300 Guests</div>
+                            <div class="card-feature"><i class="fas fa-map-marker-alt"></i> Surrey</div>
+                        </div>
                         <p class="card-description">Magnificent historic palace offering regal settings for grand events and celebrations.</p>
                         <button class="btn btn-primary" onclick="showBookingModal('venue')">Book Now</button>
                     </div>
@@ -991,22 +1426,22 @@
                 <div class="footer-col">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#booking">Booking</a></li>
-                        <li><a href="#vehicles">Vehicles</a></li>
-                        <li><a href="#venues">Venues</a></li>
-                        <li><a href="#testimonials">Testimonials</a></li>
+                        <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="#booking"><i class="fas fa-chevron-right"></i> Booking</a></li>
+                        <li><a href="#vehicles"><i class="fas fa-chevron-right"></i> Vehicles</a></li>
+                        <li><a href="#venues"><i class="fas fa-chevron-right"></i> Venues</a></li>
+                        <li><a href="#testimonials"><i class="fas fa-chevron-right"></i> Testimonials</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-col">
                     <h3>Services</h3>
                     <ul>
-                        <li><a href="#">Corporate Events</a></li>
-                        <li><a href="#">Weddings</a></li>
-                        <li><a href="#">Private Parties</a></li>
-                        <li><a href="#">Airport Transfers</a></li>
-                        <li><a href="#">Concierge Services</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Corporate Events</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Weddings</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Private Parties</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Airport Transfers</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Concierge Services</a></li>
                     </ul>
                 </div>
                 
@@ -1021,7 +1456,7 @@
             </div>
             
             <div class="copyright">
-                <p>&copy; 2025 Nottingham Private Hire. All rights reserved. | Privacy Policy | Terms of Service</p>
+                <p>&copy; 2023 Nottingham Private Hire. All rights reserved. | Privacy Policy | Terms of Service</p>
             </div>
         </div>
     </footer>
@@ -1042,15 +1477,53 @@
     </div>
 
     <script>
+        // Page loading animation
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loader').classList.add('hidden');
+            }, 1000);
+        });
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const themeIcon = themeToggle.querySelector('i');
+
+        // Check for saved theme preference or default to light
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            body.setAttribute('data-theme', 'dark');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+
+        themeToggle.addEventListener('click', function() {
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
         // Mobile menu toggle
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-            const navMenu = document.querySelector('nav ul');
-            
-            if (mobileMenuToggle && navMenu) {
-                mobileMenuToggle.addEventListener('click', function() {
-                    navMenu.classList.toggle('active');
-                });
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const navMenu = document.getElementById('navMenu');
+        
+        mobileMenuToggle.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            const icon = mobileMenuToggle.querySelector('i');
+            if (icon.classList.contains('fa-bars')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
             }
         });
         
@@ -1116,9 +1589,11 @@
                 }
                 
                 // Close mobile menu if open
-                const navMenu = document.querySelector('nav ul');
-                if (navMenu && navMenu.classList.contains('active')) {
+                if (navMenu.classList.contains('active')) {
                     navMenu.classList.remove('active');
+                    const icon = mobileMenuToggle.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
                 }
             });
         });
@@ -1127,6 +1602,51 @@
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('pickup-date').setAttribute('min', today);
         document.getElementById('event-date').setAttribute('min', today);
+        
+        // Intersection Observer for animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, observerOptions);
+        
+        // Observe elements for animation
+        document.querySelectorAll('.feature-card, .card, .testimonial-card').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Scroll to top functionality
+        const scrollTopBtn = document.getElementById('scrollTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('active');
+            } else {
+                scrollTopBtn.classList.remove('active');
+            }
+        });
+        
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Add parallax effect to hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.hero');
+            parallax.style.backgroundPositionY = -(scrolled * 0.5) + 'px';
+        });
     </script>
 </body>
 </html>
